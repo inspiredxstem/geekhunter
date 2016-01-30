@@ -1,0 +1,67 @@
+html, body {
+    height: 100%; 
+    padding: 0px;
+    margin: 0px;
+}
+.bg {
+    height: 100%;
+    position: relative;
+    background-color: black;
+}
+
+.bg::after {
+    background-size: cover;
+    background-position: center;
+    background-image: url("../images/background.jpg");
+    opacity: 0.5;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.container {
+    top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+    width: 100%;
+}
+
+h1 {
+    font-family: pacifico;
+    color: white;
+    text-align: center;
+    animation-duration: 3s;
+    animation-name: zoomIn;
+    animation-fill-mode: forwards;
+}
+
+.menu {
+    animation-duration: 1s;
+    animation-delay: 2s;
+    animation-name: slideUp;
+    animation-fill-mode: forwards;
+}
+
+@keyframes zoomIn {
+    0% {
+        font-size: 0;
+        opacity: 0.2;
+        text-shadow: 0;
+    }
+    100% {
+        font-size: 70px;
+        opacity: 1;
+        text-shadow: -5px 5px rgba(255, 255, 255, .5);
+    }
+}
+@keyframes slideUp {
+    0% {
+        height: 0;
+    }
+    100% {
+        height: 400px;
+    }
+}
