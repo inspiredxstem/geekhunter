@@ -1,11 +1,21 @@
 var TopDownGame = TopDownGame || {};
 
 //title screen
-TopDownGame.Game = function(){};
+TopDownGame.Game = function () {};
 
 TopDownGame.Game.prototype = {
   create: function() {
-    this.map = this.game.add.tilemap('level0');
+    this.changeLevel('level0');
+
+    //move player with cursor keys
+    this.cursors = this.game.input.keyboard.createCursorKeys();
+
+  },
+  changeLevel: function(levelString) {
+    if (!levelString) {
+      levelString = 'level0';
+    }
+    this.map = this.game.add.tilemap(levelString);
 
     //the first parameter is the tileset name as specified in Tiled, the second is the key to the asset
     this.map.addTilesetImage('tiles', 'gameTiles');
@@ -20,21 +30,37 @@ TopDownGame.Game.prototype = {
 
     //resizes the game world to match the layer dimensions
     this.backgroundlayer.resizeWorld();
-
+    
     this.createItems();
-    this.createDoors();    
-
+    this.createEnemies();
+    this.createDoors();
+    
+    
     //create player
     var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer')
     this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
+    this.player.frame = 4; // set initial frame
+
+    var animationFPS = 8;
+    this.player.animations.add('up', [0, 1, 2], animationFPS);
+    this.player.animations.add('right', [3, 4, 5], animationFPS);
+    this.player.animations.add('down', [6, 7, 8], animationFPS);
+    this.player.animations.add('left', [9, 10, 11], animationFPS);
+    
     this.game.physics.arcade.enable(this.player);
 
     //the camera will follow the player in the world
     this.game.camera.follow(this.player);
+  },
+  createEnemies: function() {
+    //create doors
+    this.enemies = this.game.add.group();
+    this.enemies.enableBody = true;
+    result = this.findObjectsByType('enemy', this.map, 'objectsLayer');
 
-    //move player with cursor keys
-    this.cursors = this.game.input.keyboard.createCursorKeys();
-
+    result.forEach(function(element){
+      this.createFromTiledObject(element, this.enemies);
+    }, this);
   },
   createItems: function() {
     //create items
@@ -81,30 +107,55 @@ TopDownGame.Game.prototype = {
       });
   },
   update: function() {
-    //collision
+    //collision (player)
     this.game.physics.arcade.collide(this.player, this.blockedLayer);
     this.game.physics.arcade.overlap(this.player, this.items, this.collect, null, this);
     this.game.physics.arcade.overlap(this.player, this.doors, this.enterDoor, null, this);
 
+    // collision (enemy)
+    this.game.physics.arcade.collide(this.enemies, this.blockedLayer);
+    this.game.physics.arcade.overlap(this.player, this.enemies, this.startBattle, null, this);
+    
+    var self = this;
+    // enemy chasing 
+    this.enemies.forEach(function (enemy) {
+      if(self.player.x < enemy.x){
+        enemy.body.velocity.x = -50;
+      } else {
+        (enemy.body.velocity.x = 50);
+      } 
+      if (self.player.y > enemy.y){
+        enemy.body.velocity.y = 25;
+      } else {
+        (enemy.body.velocity.y = -25)
+      }
+    });
+    
+    
+    
+    
     //player movement
     
     this.player.body.velocity.x = 0;
-
+    
     if(this.cursors.up.isDown) {
-      if(this.player.body.velocity.y == 0)
-      this.player.body.velocity.y -= 50;
-    }
-    else if(this.cursors.down.isDown) {
-      if(this.player.body.velocity.y == 0)
-      this.player.body.velocity.y += 50;
-    }
-    else {
+      this.playAnimation('up');
+      if(this.player.body.velocity.y == 0) {
+        this.player.body.velocity.y -= 50;
+      }
+    } else if(this.cursors.down.isDown) {
+      this.playAnimation('down');
+      if(this.player.body.velocity.y == 0) {
+        this.player.body.velocity.y += 50;
+      }
+    } else {
       this.player.body.velocity.y = 0;
     }
     if(this.cursors.left.isDown) {
+      this.playAnimation('left');
       this.player.body.velocity.x -= 50;
-    }
-    else if(this.cursors.right.isDown) {
+    } else if(this.cursors.right.isDown) {
+      this.playAnimation('right');
       this.player.body.velocity.x += 50;
     }
   },
@@ -114,7 +165,17 @@ TopDownGame.Game.prototype = {
     //remove sprite
     collectable.destroy();
   },
+  startBattle: function(player, enemy) {
+    // temporary! just destroy the enemy
+    enemy.destroy();
+  },
   enterDoor: function(player, door) {
     console.log('entering door that will take you to '+door.targetTilemap+' on x:'+door.targetX+' and y:'+door.targetY);
+    this.changeLevel(door.targetTilemap);
   },
+  playAnimation: function (direction) {
+    if (!this.player.animations.currentAnim.isPlaying) {
+      this.player.animations.play(direction);
+    }
+  }
 };

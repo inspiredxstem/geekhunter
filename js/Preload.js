@@ -13,13 +13,16 @@ TopDownGame.Preload.prototype = {
 
     //load game assets
     this.load.tilemap('level0', 'assets/tilemaps/level0.json', null, Phaser.Tilemap.TILED_JSON);
-    //this.load.tilemap('level1', 'assets/tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.tilemap('level1', 'assets/tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('gameTiles', 'assets/images/tiles.png');
     this.load.image('dungeontileset', 'assets/images/dungeontileset.png');
     this.load.image('greencup', 'assets/images/greencup.png');
+    this.load.image('redcup', 'assets/images/coffeecup-red.png')
     this.load.image('bluecup', 'assets/images/bluecup.png');
-    this.load.image('player', 'assets/images/player.png');
+    this.load.spritesheet('player', 'assets/images/nerdguy.png', 33, 45, 12);
     this.load.image('browndoor', 'assets/images/browndoor.png');
+    this.load.image('computer', 'assets/images/computer.png');
+    this.load.image('brainworm', 'assets/images/brainworm.png');
     
   },
   create: function() {
