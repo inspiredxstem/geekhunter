@@ -85,7 +85,7 @@
                  "properties":
                     {
                      "sprite":"browndoor",
-                     "targetTilemap":"level2",
+                     "targetTilemap":"level1",
                      "targetX":"20",
                      "targetY":"30",
                      "type":"door"
