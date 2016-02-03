@@ -60,6 +60,7 @@ h1 {
 }
 
 .menu {
+   height: 0;
    animation-duration: 1s;
    animation-delay: 2s;
    animation-name: slideUp;
