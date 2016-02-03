@@ -38,6 +38,17 @@ h1 {
     animation-fill-mode: forwards;
 }
 
+a {
+    font-family: pacifico;
+    color: white;
+    text-align: center;
+    top: 30%;
+    transform: translateY(-50%);
+    position: absolute;
+    width: 100%;
+    font-size: 200%;
+}
+
 .menu {
     animation-duration: 1s;
     animation-delay: 2s;

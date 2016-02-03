@@ -14,6 +14,8 @@ TopDownGame.Preload.prototype = {
     //load game assets
     this.load.tilemap('level0', 'assets/tilemaps/level0.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.tilemap('level1', 'assets/tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.tilemap('level2', 'assets/tilemaps/level2.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.tilemap('level3', 'assets/tilemaps/level3.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('gameTiles', 'assets/images/tiles.png');
     this.load.image('dungeontileset', 'assets/images/dungeontileset.png');
     this.load.image('greencup', 'assets/images/greencup.png');
