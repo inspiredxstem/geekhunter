@@ -77,8 +77,178 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":441.5,
-                 "y":173.5
+                 "x":277.5,
+                 "y":122.5
+                }, 
+                {
+                 "gid":3143,
+                 "height":16,
+                 "id":4,
+                 "name":"brainworm enemy",
+                 "properties":
+                    {
+                     "sprite":"brainworm",
+                     "type":"enemy"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":508,
+                 "y":373
+                }, 
+                {
+                 "gid":3143,
+                 "height":16,
+                 "id":5,
+                 "name":"brainworm enemy",
+                 "properties":
+                    {
+                     "sprite":"brainworm",
+                     "type":"enemy"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":495,
+                 "y":327
+                }, 
+                {
+                 "gid":3143,
+                 "height":16,
+                 "id":6,
+                 "name":"brainworm enemy",
+                 "properties":
+                    {
+                     "sprite":"brainworm",
+                     "type":"enemy"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":445,
+                 "y":344
+                }, 
+                {
+                 "gid":3143,
+                 "height":16,
+                 "id":7,
+                 "name":"brainworm enemy",
+                 "properties":
+                    {
+                     "sprite":"brainworm",
+                     "type":"enemy"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":365,
+                 "y":325
+                }, 
+                {
+                 "gid":3143,
+                 "height":16,
+                 "id":8,
+                 "name":"brainworm enemy",
+                 "properties":
+                    {
+                     "sprite":"brainworm",
+                     "type":"enemy"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":383,
+                 "y":189
+                }, 
+                {
+                 "gid":3143,
+                 "height":16,
+                 "id":9,
+                 "name":"brainworm enemy",
+                 "properties":
+                    {
+                     "sprite":"brainworm",
+                     "type":"enemy"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":264,
+                 "y":254
+                }, 
+                {
+                 "gid":3143,
+                 "height":16,
+                 "id":10,
+                 "name":"brainworm enemy",
+                 "properties":
+                    {
+                     "sprite":"brainworm",
+                     "type":"enemy"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":442,
+                 "y":112
+                }, 
+                {
+                 "gid":3143,
+                 "height":16,
+                 "id":11,
+                 "name":"brainworm enemy",
+                 "properties":
+                    {
+                     "sprite":"brainworm",
+                     "type":"enemy"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":202,
+                 "y":58
+                }, 
+                {
+                 "gid":3143,
+                 "height":16,
+                 "id":12,
+                 "name":"brainworm enemy",
+                 "properties":
+                    {
+                     "sprite":"brainworm",
+                     "type":"enemy"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":365,
+                 "y":77
+                }, 
+                {
+                 "gid":3143,
+                 "height":16,
+                 "id":13,
+                 "name":"brainworm enemy",
+                 "properties":
+                    {
+                     "sprite":"brainworm",
+                     "type":"enemy"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":292,
+                 "y":296
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -87,7 +257,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":4,
+ "nextobjectid":14,
  "orientation":"orthogonal",
  "properties":
     {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="4">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="14">
  <tileset firstgid="1" name="dungeontileset" tilewidth="32" tileheight="32" tilecount="3072" columns="64">
   <image source="dungeontileset.png" width="2048" height="1536"/>
   <terraintypes>
@@ -233,7 +233,67 @@
     <property name="type" value="door"/>
    </properties>
   </object>
-  <object id="3" name="brainworm enemy" gid="3143" x="441.5" y="173.5" width="16" height="16">
+  <object id="3" name="brainworm enemy" gid="3143" x="277.5" y="122.5" width="16" height="16">
+   <properties>
+    <property name="sprite" value="brainworm"/>
+    <property name="type" value="enemy"/>
+   </properties>
+  </object>
+  <object id="4" name="brainworm enemy" gid="3143" x="508" y="373" width="16" height="16">
+   <properties>
+    <property name="sprite" value="brainworm"/>
+    <property name="type" value="enemy"/>
+   </properties>
+  </object>
+  <object id="5" name="brainworm enemy" gid="3143" x="495" y="327" width="16" height="16">
+   <properties>
+    <property name="sprite" value="brainworm"/>
+    <property name="type" value="enemy"/>
+   </properties>
+  </object>
+  <object id="6" name="brainworm enemy" gid="3143" x="445" y="344" width="16" height="16">
+   <properties>
+    <property name="sprite" value="brainworm"/>
+    <property name="type" value="enemy"/>
+   </properties>
+  </object>
+  <object id="7" name="brainworm enemy" gid="3143" x="365" y="325" width="16" height="16">
+   <properties>
+    <property name="sprite" value="brainworm"/>
+    <property name="type" value="enemy"/>
+   </properties>
+  </object>
+  <object id="8" name="brainworm enemy" gid="3143" x="383" y="189" width="16" height="16">
+   <properties>
+    <property name="sprite" value="brainworm"/>
+    <property name="type" value="enemy"/>
+   </properties>
+  </object>
+  <object id="9" name="brainworm enemy" gid="3143" x="264" y="254" width="16" height="16">
+   <properties>
+    <property name="sprite" value="brainworm"/>
+    <property name="type" value="enemy"/>
+   </properties>
+  </object>
+  <object id="10" name="brainworm enemy" gid="3143" x="442" y="112" width="16" height="16">
+   <properties>
+    <property name="sprite" value="brainworm"/>
+    <property name="type" value="enemy"/>
+   </properties>
+  </object>
+  <object id="11" name="brainworm enemy" gid="3143" x="202" y="58" width="16" height="16">
+   <properties>
+    <property name="sprite" value="brainworm"/>
+    <property name="type" value="enemy"/>
+   </properties>
+  </object>
+  <object id="12" name="brainworm enemy" gid="3143" x="365" y="77" width="16" height="16">
+   <properties>
+    <property name="sprite" value="brainworm"/>
+    <property name="type" value="enemy"/>
+   </properties>
+  </object>
+  <object id="13" name="brainworm enemy" gid="3143" x="292" y="296" width="16" height="16">
    <properties>
     <property name="sprite" value="brainworm"/>
     <property name="type" value="enemy"/>

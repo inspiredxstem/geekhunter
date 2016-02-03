@@ -15,6 +15,26 @@ TopDownGame.Game.prototype = {
     if (!levelString) {
       levelString = 'level0';
     }
+    
+    // cleanup
+    if (this.items) {
+      this.items.forEach(function (item) { item.destroy(); });
+    }
+    if (this.enemies) {
+      this.enemies.forEach(function (enemy) { enemy.destroy(); });
+    }
+    if (this.doors) {
+      this.doors.forEach(function (door) { door.destroy(); });
+    }
+    if (this.map) {
+      this.backgroundlayer.destroy();
+      this.blockedLayer.destroy();
+      this.map.destroy();
+    }
+    if (this.player) {
+      this.player.destroy();
+    }
+
     this.map = this.game.add.tilemap(levelString);
 
     //the first parameter is the tileset name as specified in Tiled, the second is the key to the asset
