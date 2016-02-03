@@ -1,107 +1,102 @@
 html, body {
-    height: 100%; 
-    padding: 0px;
-    margin: 0px;
+   height: 100%; 
+   padding: 0px;
+   margin: 0px;
 }
 .bg {
-    height: 100%;
-    position: relative;
-    background-color: black;
+   height: 100%;
+   position: relative;
+   background-color: black;
 }
 
 .bg::after {
-    background-size: cover;
-    background-position: center;
-    background-image: url("../images/background.jpg");
-    opacity: 0.5;
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
+   background-size: cover;
+   background-position: center;
+   background-image: url("../images/background.jpg");
+   opacity: 0.5;
+   content: "";
+   position: absolute;
+   top: 0;
+   left: 0;
+   height: 100%;
+   width: 100%;
 }
 
 .container {
-    top: 50%;
-    left:50%;
-    transform: translate(-50% ,-50%);
-    position: absolute;
+   top: 50%;
+   left:50%;
+   transform: translate(-50% ,-50%);
+   position: absolute;
 }
 
 h1 {
-    font-family: pacifico;
-    color: white;
-    text-align: center;
-    animation-duration: 3s;
-    animation-name: zoomIn;
-    animation-fill-mode: forwards;
+   font-family: pacifico;
+   color: white;
+   text-align: center;
+   animation-duration: 3s;
+   animation-name: zoomIn;
+   animation-fill-mode: forwards;
 }
-
-
-    
 .menu-item {
-    font-family:vollkorn;
-    text-align:center;
-    text-decoration:none;
-    font-size:30px;
-    color:white;
-    display:block;
-    margin-left:-45%;
-    opacity:0;
-    animation-duration:1s;
-    animation-name:slideIn;
-    animation-fill-mode: forwards;
+   font-family:vollkorn;
+   text-align:center;
+   text-decoration:none;
+   font-size:30px;
+   color:white;
+   display:block;
+   margin-left:-45%;
+   opacity:0;
+   animation-duration:1s;
+   animation-name:slideIn;
+   animation-fill-mode: forwards;
 }
 
 .menu-item:nth-of-type(1){
-    animation-delay:2s;
+   animation-delay:3s;
 }
 
 .menu-item:nth-of-type(2){
-    animation-delay:3s;
+   animation-delay:4s;
 }
 
 .menu {
-    animation-duration: 1s;
-    animation-delay: 2s;
-    animation-name: slideUp;
-    animation-fill-mode: forwards;
-    
+   animation-duration: 1s;
+   animation-delay: 2s;
+   animation-name: slideUp;
+   animation-fill-mode: forwards;
 }
 .menu-options {
-    margin-left:-45%;
-    opacity:1;
+   margin-left:-45%;
+   opacity:1;
 }
 
 @keyframes zoomIn {
-    0% {
-        font-size: 0;
-        opacity: 0.2;
-        text-shadow: 0;
-    }
-    100% {
-        font-size: 70px;
-        opacity: 1;
-        text-shadow: -5px 5px rgba(255, 255, 255, .5);
-    }
+   0% {
+       font-size: 0;
+       opacity: 0.2;
+       text-shadow: 0;
+   }
+   100% {
+       font-size: 70px;
+       opacity: 1;
+       text-shadow: -5px 5px rgba(255, 255, 255, .5);
+   }
 }
 @keyframes slideUp {
-    0% {
-        height: 0;
-    }
-    100% {
-        height: 400px;
-    }
+   0% {
+       height: 0;
+   }
+   100% {
+       height: 400px;
+   }
 }
 @keyframes slideIn{
-    0% {
-        margin-left:-45%;
-        opacity:0;
-    }
-    100% {
-        margin-left:0%;
-        opacity:1;
-    }
+   0% {
+       margin-left:-45%;
+       opacity:0;
+   }
+   100% {
+       margin-left:0%;
+       opacity:1;
+   }
 }
-
