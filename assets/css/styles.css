@@ -24,9 +24,9 @@ html, body {
 
 .container {
     top: 50%;
-    transform: translateY(-50%);
+    left:50%;
+    transform: translate(-50% ,-50%);
     position: absolute;
-    width: 100%;
 }
 
 h1 {
@@ -38,15 +38,28 @@ h1 {
     animation-fill-mode: forwards;
 }
 
-a {
-    font-family: pacifico;
-    color: white;
-    text-align: center;
-    top: 30%;
-    transform: translateY(-50%);
-    position: absolute;
-    width: 100%;
-    font-size: 200%;
+
+    
+.menu-item {
+    font-family:vollkorn;
+    text-align:center;
+    text-decoration:none;
+    font-size:30px;
+    color:white;
+    display:block;
+    margin-left:-45%;
+    opacity:0;
+    animation-duration:1s;
+    animation-name:slideIn;
+    animation-fill-mode: forwards;
+}
+
+.menu-item:nth-of-type(1){
+    animation-delay:2s;
+}
+
+.menu-item:nth-of-type(2){
+    animation-delay:3s;
 }
 
 .menu {
@@ -54,6 +67,11 @@ a {
     animation-delay: 2s;
     animation-name: slideUp;
     animation-fill-mode: forwards;
+    
+}
+.menu-options {
+    margin-left:-45%;
+    opacity:1;
 }
 
 @keyframes zoomIn {
@@ -76,3 +94,14 @@ a {
         height: 400px;
     }
 }
+@keyframes slideIn{
+    0% {
+        margin-left:-45%;
+        opacity:0;
+    }
+    100% {
+        margin-left:0%;
+        opacity:1;
+    }
+}
+
