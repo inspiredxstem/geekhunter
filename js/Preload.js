@@ -10,6 +10,7 @@ TopDownGame.Preload.prototype = {
     this.preloadBar.anchor.setTo(0.5);
 
     this.load.setPreloadSprite(this.preloadBar);
+    this.load.audio('megalovania','assets/sound/Undertale OST-Megalovania www.mp3lio.net .mp3');
 
     //load game assets
     this.load.tilemap('level0', 'assets/tilemaps/level0.json', null, Phaser.Tilemap.TILED_JSON);

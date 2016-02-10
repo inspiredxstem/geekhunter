@@ -1,3 +1,4 @@
+/*global Phaser*/
 var TopDownGame = TopDownGame || {};
 
 //title screen
@@ -8,7 +9,9 @@ TopDownGame.Game.prototype = {
     this.changeLevel('level0');
 
     //move player with cursor keys
-    this.cursors = this.game.input.keyboard.createCursorKeys();
+    this.game.cursors = this.cursors = this.game.input.keyboard.createCursorKeys();
+    this.game.globals = this;
+
 
   },
   changeLevel: function(levelString) {
@@ -16,6 +19,13 @@ TopDownGame.Game.prototype = {
       levelString = 'level0';
     }
     
+    // switch music
+    if (this.music) {
+      this.music.stop();
+    }
+    this.music = this.add.audio('megalovania');
+    this.music.play();
+
     // cleanup
     if (this.items) {
       this.items.forEach(function (item) { item.destroy(); });
@@ -33,6 +43,9 @@ TopDownGame.Game.prototype = {
     }
     if (this.player) {
       this.player.destroy();
+    }
+    if (this.music){
+      this.music.destory;
     }
 
     this.map = this.game.add.tilemap(levelString);
@@ -58,28 +71,21 @@ TopDownGame.Game.prototype = {
     
     //create player
     var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer')
-    this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
-    this.player.frame = 4; // set initial frame
-
-    var animationFPS = 8;
-    this.player.animations.add('up', [0, 1, 2], animationFPS);
-    this.player.animations.add('right', [3, 4, 5], animationFPS);
-    this.player.animations.add('down', [6, 7, 8], animationFPS);
-    this.player.animations.add('left', [9, 10, 11], animationFPS);
-    
-    this.game.physics.arcade.enable(this.player);
+    this.player = new Player(this.game, result[0].x, result[0].y);
+    this.game.add.existing(this.player);
 
     //the camera will follow the player in the world
     this.game.camera.follow(this.player);
   },
   createEnemies: function() {
-    //create doors
+    //create enemies
     this.enemies = this.game.add.group();
     this.enemies.enableBody = true;
-    result = this.findObjectsByType('enemy', this.map, 'objectsLayer');
+    var result = this.findObjectsByType('enemy', this.map, 'objectsLayer');
 
     result.forEach(function(element){
-      this.createFromTiledObject(element, this.enemies);
+      // this.createFromTiledObject(element, this.enemies);
+      this.createEnemy(element, this.enemies);
     }, this);
   },
   createItems: function() {
@@ -87,7 +93,7 @@ TopDownGame.Game.prototype = {
     this.items = this.game.add.group();
     this.items.enableBody = true;
     var item;    
-    result = this.findObjectsByType('item', this.map, 'objectsLayer');
+    var result = this.findObjectsByType('item', this.map, 'objectsLayer');
     result.forEach(function(element){
       this.createFromTiledObject(element, this.items);
     }, this);
@@ -96,7 +102,7 @@ TopDownGame.Game.prototype = {
     //create doors
     this.doors = this.game.add.group();
     this.doors.enableBody = true;
-    result = this.findObjectsByType('door', this.map, 'objectsLayer');
+    var result = this.findObjectsByType('door', this.map, 'objectsLayer');
 
     result.forEach(function(element){
       this.createFromTiledObject(element, this.doors);
@@ -113,7 +119,7 @@ TopDownGame.Game.prototype = {
         //so they might not be placed in the exact position as in Tiled
         element.y -= map.tileHeight;
         result.push(element);
-      }      
+      }
     });
     return result;
   },
@@ -121,10 +127,14 @@ TopDownGame.Game.prototype = {
   createFromTiledObject: function(element, group) {
     var sprite = group.create(element.x, element.y, element.properties.sprite);
 
-      //copy all properties to the sprite
-      Object.keys(element.properties).forEach(function(key){
-        sprite[key] = element.properties[key];
-      });
+    //copy all properties to the sprite
+    Object.keys(element.properties).forEach(function(key){
+      sprite[key] = element.properties[key];
+    });
+  },
+  createEnemy: function(element, group) {
+    var sprite = new Enemy(this.game, element.x, element.y, element.properties);
+    group.add(sprite);
   },
   update: function() {
     //collision (player)
@@ -135,56 +145,6 @@ TopDownGame.Game.prototype = {
     // collision (enemy)
     this.game.physics.arcade.collide(this.enemies, this.blockedLayer);
     this.game.physics.arcade.overlap(this.player, this.enemies, this.startBattle, null, this);
-    
-    var self = this;
-    // enemy chasing 
-    this.enemies.forEach(function (enemy) {
-      if(self.player.x < enemy.x){
-        enemy.body.velocity.x = -50;
-      } else {
-        (enemy.body.velocity.x = 50);
-      } 
-      if (self.player.y > enemy.y){
-        enemy.body.velocity.y = 25;
-      } else {
-        (enemy.body.velocity.y = -25)
-      }
-    });
-    
-    
-    
-    
-    //player movement
-    
-    var playerMaxSpeed = 50;
-    
-    // "cheat" code to go fast
-    if (this.input.keyboard.isDown(Phaser.KeyCode.SHIFT)) {
-      playerMaxSpeed = 1000;
-    }
-    
-    this.player.body.velocity.x = 0;
-    
-    if(this.cursors.up.isDown) {
-      this.playAnimation('up');
-      if(this.player.body.velocity.y == 0) {
-        this.player.body.velocity.y -= playerMaxSpeed;
-      }
-    } else if(this.cursors.down.isDown) {
-      this.playAnimation('down');
-      if(this.player.body.velocity.y == 0) {
-        this.player.body.velocity.y += playerMaxSpeed;
-      }
-    } else {
-      this.player.body.velocity.y = 0;
-    }
-    if(this.cursors.left.isDown) {
-      this.playAnimation('left');
-      this.player.body.velocity.x -= playerMaxSpeed;
-    } else if(this.cursors.right.isDown) {
-      this.playAnimation('right');
-      this.player.body.velocity.x += playerMaxSpeed;
-    }
   },
   collect: function(player, collectable) {
     console.log('yummy!');
@@ -199,10 +159,5 @@ TopDownGame.Game.prototype = {
   enterDoor: function(player, door) {
     console.log('entering door that will take you to '+door.targetTilemap+' on x:'+door.targetX+' and y:'+door.targetY);
     this.changeLevel(door.targetTilemap);
-  },
-  playAnimation: function (direction) {
-    if (!this.player.animations.currentAnim.isPlaying) {
-      this.player.animations.play(direction);
-    }
   }
 };
