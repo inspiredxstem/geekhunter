@@ -11,14 +11,13 @@ TopDownGame.Game.prototype = {
     //move player with cursor keys
     this.game.cursors = this.cursors = this.game.input.keyboard.createCursorKeys();
     this.game.globals = this;
-
+    
 
   },
   changeLevel: function(levelString) {
     if (!levelString) {
       levelString = 'level0';
     }
-    
     // switch music
     if (this.music) {
       this.music.stop();
@@ -26,27 +25,7 @@ TopDownGame.Game.prototype = {
     this.music = this.add.audio('megalovania');
     this.music.play();
 
-    // cleanup
-    if (this.items) {
-      this.items.forEach(function (item) { item.destroy(); });
-    }
-    if (this.enemies) {
-      this.enemies.forEach(function (enemy) { enemy.destroy(); });
-    }
-    if (this.doors) {
-      this.doors.forEach(function (door) { door.destroy(); });
-    }
-    if (this.map) {
-      this.backgroundlayer.destroy();
-      this.blockedLayer.destroy();
-      this.map.destroy();
-    }
-    if (this.player) {
-      this.player.destroy();
-    }
-    if (this.music){
-      this.music.destory;
-    }
+    this.cleanup();
 
     this.map = this.game.add.tilemap(levelString);
 
@@ -68,7 +47,6 @@ TopDownGame.Game.prototype = {
     this.createEnemies();
     this.createDoors();
     
-    
     //create player
     var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer')
     this.player = new Player(this.game, result[0].x, result[0].y);
@@ -77,6 +55,28 @@ TopDownGame.Game.prototype = {
     //the camera will follow the player in the world
     this.game.camera.follow(this.player);
   },
+  
+  cleanup: function() {
+    // cleanup
+    if (this.items) {
+      this.items.forEach(function (item) { item.destroy(); });
+    }
+    if (this.enemies) {
+      this.enemies.forEach(function (enemy) { enemy.destroy(); });
+    }
+    if (this.doors) {
+      this.doors.forEach(function (door) { door.destroy(); });
+    }
+    if (this.map) {
+      this.backgroundlayer.destroy();
+      this.blockedLayer.destroy();
+      this.map.destroy();
+    }
+    // if (this.player) {
+    //   this.player.destroy();
+    // }
+  },
+  
   createEnemies: function() {
     //create enemies
     this.enemies = this.game.add.group();
@@ -154,7 +154,10 @@ TopDownGame.Game.prototype = {
   },
   startBattle: function(player, enemy) {
     // temporary! just destroy the enemy
-    enemy.destroy();
+    // enemy.destroy();
+    this.cleanup();
+    this.game.state.start('Battle');
+    this.currentEnemy = enemy;
   },
   enterDoor: function(player, door) {
     console.log('entering door that will take you to '+door.targetTilemap+' on x:'+door.targetX+' and y:'+door.targetY);

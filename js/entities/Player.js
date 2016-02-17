@@ -35,6 +35,9 @@ Player.prototype.playAnimation = function (direction) {
 Player.prototype.update = function() {
     var playerMaxSpeed = 50;
     
+    if (!this.game) {
+      return;
+    }
     // "cheat" code to go fast
     if (this.game.input.keyboard.isDown(Phaser.KeyCode.SHIFT)) {
       playerMaxSpeed = 1000;

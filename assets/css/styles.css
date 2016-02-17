@@ -101,3 +101,18 @@ h1 {
        opacity:1;
    }
 }
+
+
+.setting-bg{
+   background-color:black;
+   height:100%;
+   position:relative;
+}
+
+.setting-items{
+   font-size:50px;
+}
+
+h2{
+   margin:0px;
+}

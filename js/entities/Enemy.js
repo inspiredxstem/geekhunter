@@ -14,15 +14,16 @@ function Enemy (game, x, y, properties) {
 Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy.prototype.constructor = Enemy;
 
-Enemy.prototype.update = function () {
+
+/*Enemy.prototype.update = function (){
     if (this.game.globals.player.x < this.x) {
         this.body.velocity.x = -50;
     } else {
         this.body.velocity.x = 50;
     } 
     if (this.game.globals.player.y > this.y) {
-        this.body.velocity.y = 25;
+        this.body.velocity.y = 50;
     } else {
-        this.body.velocity.y = -25;
+        this.body.velocity.y = -50;
     }
-}
+}*/
