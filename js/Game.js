@@ -145,6 +145,9 @@ TopDownGame.Game.prototype = {
     // collision (enemy)
     this.game.physics.arcade.collide(this.enemies, this.blockedLayer);
     this.game.physics.arcade.overlap(this.player, this.enemies, this.startBattle, null, this);
+    
+    // For debugging: immediately start battle with first enemy
+    this.startBattle(this.player, this.enemies.getFirstAlive());
   },
   collect: function(player, collectable) {
     console.log('yummy!');

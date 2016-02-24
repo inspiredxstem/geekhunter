@@ -15,7 +15,13 @@ Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy.prototype.constructor = Enemy;
 
 
-/*Enemy.prototype.update = function (){
+Enemy.prototype.update = function (){
+    if (!this.body) {
+        // TODO: fix
+        //console.log('blah');
+        return;
+    }
+    
     if (this.game.globals.player.x < this.x) {
         this.body.velocity.x = -50;
     } else {
@@ -26,4 +32,4 @@ Enemy.prototype.constructor = Enemy;
     } else {
         this.body.velocity.y = -50;
     }
-}*/
+}
