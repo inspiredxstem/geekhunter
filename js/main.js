@@ -8,5 +8,3 @@ TopDownGame.game.state.add('Game', TopDownGame.Game);
 TopDownGame.game.state.add('Battle', TopDownGame.Battle);
 
 TopDownGame.game.state.start('Boot');
-
-

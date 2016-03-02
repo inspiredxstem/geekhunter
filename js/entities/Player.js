@@ -10,7 +10,7 @@ function Player (game, x, y) {
     this.animations.add('up', [0, 1, 2], animationFPS);
     this.animations.add('right', [3, 4, 5], animationFPS);
     this.animations.add('down', [6, 7, 8], animationFPS);
-    this.animations.add('left', [9, 10, 11], animationFPS);
+    this.animations.add('left', [9, 10, 11], animationFPS); //JAMES GET OFF OUR GAME, YOU ARE GOING TO RUIN IT//
 
     this.maxSpeed = 50;
     this.sprintSpeed = 1000;
@@ -65,4 +65,4 @@ Player.prototype.update = function() {
       this.playAnimation('right');
       this.body.velocity.x += playerMaxSpeed;
     }
-}
+};

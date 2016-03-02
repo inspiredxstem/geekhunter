@@ -14,10 +14,10 @@ TopDownGame.Battle.prototype = {
     this.game.add.existing(this.player);
     this.player.scale.set = (16, 16, 1);
     this.game.camera.follow(this.player);
-    
+
     this.enemy = new Enemy(this.game, 200, 400, this.game.globals.currentEnemy.properties);
     this.game.add.existing(this.enemy);
-    console.log(this.game);
+    console.log("log 1", this.game);
   },
   update: function() {
     

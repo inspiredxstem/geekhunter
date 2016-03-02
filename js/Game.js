@@ -41,7 +41,11 @@ TopDownGame.Game.prototype = {
     this.map.setCollisionBetween(1, 10000, true, 'blockedLayer');
 
     //resizes the game world to match the layer dimensions
-    this.backgroundlayer.resizeWorld();
+    
+    this.world.width = 200;
+    this.world.height = 200;
+    console.log(this.world);
+    //this.backgroundlayer.resizeWorld();
     
     this.createItems();
     this.createEnemies();
