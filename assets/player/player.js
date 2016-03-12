@@ -32,4 +32,14 @@ window.onload = function() {
       myMedia.volume = myVolume;
   }
     
+    
+  $('div').on('click', function() {
+      $(this).toggleClass('show-description');
+  });
+  
+  $('#volume-label').click(function(e) {
+    // $('#player').toggleClass('hidden');
+    $('#player').animate({width:'toggle'},350);
+  });
 }
+

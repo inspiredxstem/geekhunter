@@ -8,6 +8,8 @@ function Enemy (game, x, y, properties) {
 
 
     this.health = 10;
+    this.defense = 6;
+    this.strength = 4;
 };
 
 

@@ -48,3 +48,15 @@ body {
   outline: none;
   border: none;
 }
+
+#volume-label {
+  display: block;
+  width: 200px;
+  color: white;
+  background-color: gray;
+  border-radius: 4px;
+}
+
+/*.hidden {*/
+/*  display: none;*/
+/*}*/

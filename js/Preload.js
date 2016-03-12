@@ -10,6 +10,8 @@ TopDownGame.Preload.prototype = {
     this.preloadBar.anchor.setTo(0.5);
 
     this.load.setPreloadSprite(this.preloadBar);
+    this.load.audio('triple','assets/sound/Oh Baby.mp3');
+    this.load.audio('knifeslash','assets/sound/knifeslash.mp3');
     this.load.audio('megalovania','assets/sound/Undertale OST-Megalovania www.mp3lio.net .mp3');
 
     //load game assets
@@ -17,6 +19,7 @@ TopDownGame.Preload.prototype = {
     this.load.tilemap('level1', 'assets/tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.tilemap('level2', 'assets/tilemaps/level2.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.tilemap('level3', 'assets/tilemaps/level3.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.tilemap('dungeonbattle', 'assets/battlemaps/dungeonbattle.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.image('gameTiles', 'assets/images/tiles.png');
     this.load.image('dungeontileset', 'assets/images/dungeontileset.png');
     this.load.image('greencup', 'assets/images/greencup.png');
