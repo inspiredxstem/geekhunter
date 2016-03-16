@@ -159,7 +159,16 @@ TopDownGame.Battle.prototype = {
     this.animateDamageNumbers(this.enemy);
     
     // update hud
-    this.statusDisplayHP.text = this.player.health;
+    this.statusDisplayHP .text = this.player.health;
     this.statusDisplayEnemyHP.text = this.enemy.health;
+    
+    //end battle
+    if(this.enemy.health <= 0){
+      this.game.state.start('Game');
+    }
   }
 };
+
+
+
+

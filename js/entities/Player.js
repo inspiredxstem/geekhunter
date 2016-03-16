@@ -15,11 +15,11 @@ function Player (game, x, y) {
     this.maxSpeed = 50;
     this.sprintSpeed = 1000;
 
-    this.health = 20;
+    this.health = 10000000000;
     this.inventory = ['potion', 'potion'];
     this.mana = 50;
     this.strength = 10;
-    this.resistance = 7;
+    this.defense = 7;
 };
 
 
@@ -32,8 +32,8 @@ Player.prototype.playAnimation = function (direction) {
     }
 };
 Player.prototype.calculateDamage = function (enemyDefense){
- var random = 1 + Math.floor(Math.random() * 8);
- var damage = this.strength + random;
+ var random = 1 + Math.floor(Math.random() * 5);
+ var damage = this.strength + random - enemyDefense;
  return damage;
 }
 Player.prototype.attack = function(enemy) {
@@ -49,11 +49,13 @@ Player.prototype.attack = function(enemy) {
    if(this.alive){
     enemy.health -= damageAmount;
    } if(enemy.health <= 0){
-     alert('Stevens Hairline is nonexistent');
+     console.log('RIP');
+     enemy.kill();
    }
   
   return damageAmount;
 };
+
 Player.prototype.update = function() {
     var playerMaxSpeed = 50;
     
@@ -67,7 +69,7 @@ Player.prototype.update = function() {
     
     this.body.velocity.x = 0;
     
-    if (!this.game.state.current === 'battle') {
+    if (this.game.state.current !== 'Battle') {
 
       if(this.game.cursors.up.isDown) {
         this.playAnimation('up');
@@ -90,4 +92,5 @@ Player.prototype.update = function() {
         this.body.velocity.x += playerMaxSpeed;
       }
     }
+
 };

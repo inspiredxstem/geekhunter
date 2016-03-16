@@ -24,6 +24,7 @@ TopDownGame.Game.prototype = {
     }
     this.music = this.add.audio('megalovania');
     this.music.play();
+    this.music.volume = 0.5
 
     this.cleanup();
 
@@ -76,9 +77,6 @@ TopDownGame.Game.prototype = {
       this.blockedLayer.destroy();
       this.map.destroy();
     }
-    // if (this.player) {
-    //   this.player.destroy();
-    // }
   },
   
   createEnemies: function() {
@@ -148,10 +146,10 @@ TopDownGame.Game.prototype = {
 
     // collision (enemy)
     this.game.physics.arcade.collide(this.enemies, this.blockedLayer);
-    // this.game.physics.arcade.overlap(this.player, this.enemies, this.startBattle, null, this);
+     this.game.physics.arcade.overlap(this.player, this.enemies, this.startBattle, null, this);
     
     // For debugging: immediately start battle with first enemy
-    this.startBattle(this.player, this.enemies.getFirstAlive());
+    //this.startBattle(this.player, this.enemies.getFirstAlive());
   },
   collect: function(player, collectable) {
     console.log('yummy!');

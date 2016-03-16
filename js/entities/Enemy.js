@@ -7,7 +7,7 @@ function Enemy (game, x, y, properties) {
     Phaser.Sprite.call(this, game, x, y, this.type);
 
 
-    this.health = 10;
+    this.health = 100;
     this.defense = 6;
     this.strength = 4;
 };
@@ -34,4 +34,10 @@ Enemy.prototype.update = function (){
     } else {
         this.body.velocity.y = -50;
     }
+}
+
+Enemy.prototype.calculateDamage = function (playerDefense){
+ var random = 1 + Math.floor(Math.random() * 10);
+ var damage = this.strength + random - this.player.resistance;
+ return damage;
 }
