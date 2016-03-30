@@ -23,15 +23,15 @@ TopDownGame.Battle.prototype = {
     //create layer
     this.backgroundlayer = this.map.createLayer('backgroundLayer');
     
-    this.drawMenuBackground();
-    this.drawMenuItems();
-    this.drawStatusDisplay();
 
     this.player = this.game.globals.player = new Player(this.game, 160 - 16, 180);
     this.game.add.existing(this.player);
     // hack to make player face up
     this.player.playAnimation('up');
     
+    this.drawMenuBackground();
+    this.drawMenu();
+    this.drawStatusDisplay();
 
     console.log(this.game.globals.currentEnemy.properties);
     this.enemy = new Enemy(this.game, 160 - 16, 80, this.game.globals.currentEnemy.properties);
@@ -52,17 +52,59 @@ TopDownGame.Battle.prototype = {
     var lineWidth = 2;
     rect.drawRect(160 - (lineWidth/2), 251, lineWidth, 100);
   },
-  drawMenuItems: function() {
+  drawMenu: function() {
     var style = { font: "20px Arial", fill: "#ffffff", align: "center" };
     var attackMenuText = this.game.add.text(25, 250, "Attack", style)
     var itemMenuText = this.game.add.text(25, 270, "Item", style)
     var fleeMenuText = this.game.add.text(25, 290, "Flee", style)
 
-    this.menuItems = [
+    this.mainMenuItems = [
       {text: attackMenuText, isHighlighted: false, index: 0, action: 'attack'},
-      {text: itemMenuText,   isHighlighted: false, index: 1, action: 'item'},
+      {text: itemMenuText,   isHighlighted: false, index: 1, action: 'activateItemsMenu'},
       {text: fleeMenuText,   isHighlighted: false, index: 2, action: 'flee'}
     ];
+    
+    this.menuItems = this.mainMenuItems;
+    
+    // this.hideMenu(this.menuItems);
+
+    this.itemsMenuItems = [];
+    for (var i = 0; i < this.player.inventory.length; i++) {
+      var item = this.player.inventory[i];
+      console.log(item);
+      
+      var itemText = this.game.add.text(25, 250 + i*20, item.name, style);
+
+      this.itemsMenuItems.push({
+        text: itemText,
+        isHighlighted: false,
+        index: i,
+        action: 'useItem:' + i
+      });
+    }
+    this.hideMenu(this.itemsMenuItems);
+  },
+  activateItemsMenu: function() {
+    this.menuItems = this.itemsMenuItems;
+    this.hideMenu(this.mainMenuItems);
+    this.showMenu(this.itemsMenuItems);
+    this.highlightMenuItem(this.itemsMenuItems[0]);
+  },
+  activateMainMenu: function() {
+    this.menuItems = this.mainMenuItems;
+    this.hideMenu(this.itemsMenuItems);
+    this.showMenu(this.mainMenuItems);
+    this.highlightMenuItem(this.menuItems[0]);
+  },
+  hideMenu: function(menuItems) {
+    menuItems.forEach(function(menuItem) {
+      menuItem.text.x = -100;
+    });
+  },
+  showMenu: function(menuItems) {
+    menuItems.forEach(function(menuItem) {
+      menuItem.text.x = 25;
+    });
   },
   drawStatusDisplay: function() {
     var style = { font: "20px Arial", fill: "#ffffff", align: "left" };
@@ -91,10 +133,30 @@ TopDownGame.Battle.prototype = {
   },
   triggerAction: function(action) {
     console.log(action);
+    var self = this;
     if (action === 'attack') {
-      var damageAmount = this.player.attack(this.enemy);
-      this.startAnimateDamageNumbers(this.enemy, damageAmount);
-      this.playerAttackSound.play();
+      this.player.attack(this.enemy, function (damageAmount) {
+        self.startAnimateDamageNumbers(self.enemy, damageAmount);
+        self.playerAttackSound.play();
+        self.shakeFrames = 18;
+      });
+    } else if (action === 'activateItemsMenu') {
+      self.activateItemsMenu();
+    } else if (action.split(':')[0] === 'useItem') {
+      var itemIndex = parseInt(action.split(':')[1], 10);
+      var item = this.player.inventory[itemIndex];
+      this.useItem(item);
+    } else if (action === 'flee'){
+      return this.game.state.start('Game');
+    }
+  },
+  useItem: function(item) {
+    if (item.name.toLowerCase() === 'back') {
+      this.activateMainMenu();
+      return;
+    }
+    if (item.type === 'healing') {
+      this.player.health += item.value;
     }
   },
   onEnter: function() {
@@ -116,13 +178,8 @@ TopDownGame.Battle.prototype = {
     }
     sprite.currentDamageText.y -= 1;
     sprite.currentDamageText.alpha -= 0.02;
-  },
-  
-  
-  
-  
-  
-  
+  },  
+
   update: function() {
     var currentMenuItem = this.getCurrentMenuItem();
     var currentMenuItemIndex = currentMenuItem.index;
@@ -157,6 +214,17 @@ TopDownGame.Battle.prototype = {
     // run animations
     this.animateDamageNumbers(this.player);
     this.animateDamageNumbers(this.enemy);
+    
+    // camera shake
+    if (this.shakeFrames > 0) {
+      var rand1 = this.game.rnd.integerInRange(-5, 5);
+      var rand2 = this.game.rnd.integerInRange(-5, 5);
+      this.game.world.setBounds(rand1, rand2, this.game.width + rand1, this.game.height + rand2);
+      this.shakeFrames--;
+      if (this.shakeFrames == 0) {
+        this.game.world.setBounds(0, 0, this.game.width, this.game.height);
+      }
+    }
     
     // update hud
     this.statusDisplayHP .text = this.player.health;

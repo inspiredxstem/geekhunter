@@ -6,6 +6,7 @@ function Player (game, x, y) {
     this.game.physics.arcade.enable(this);
     this.frame = 4; // set initial frame
 
+    this.originalLocation = {x: x, y: y};
     var animationFPS = 8;
     this.animations.add('up', [0, 1, 2], animationFPS);
     this.animations.add('right', [3, 4, 5], animationFPS);
@@ -15,8 +16,12 @@ function Player (game, x, y) {
     this.maxSpeed = 50;
     this.sprintSpeed = 1000;
 
-    this.health = 10000000000;
-    this.inventory = ['potion', 'potion'];
+    this.health = 1;
+    this.inventory = [
+      { name: 'potion',    value: 20, type: 'healing',  description: 'Heals you for 20 HP'},
+      { name: 'hi potion', value: 50, type: 'healing', description: 'Heals you for 50 HP' },
+      { name: 'back', value: 50, type: 'action', description: 'what do you think it does? T_T' },
+    ];
     this.mana = 50;
     this.strength = 10;
     this.defense = 7;
@@ -36,8 +41,9 @@ Player.prototype.calculateDamage = function (enemyDefense){
  var damage = this.strength + random - enemyDefense;
  return damage;
 }
-Player.prototype.attack = function(enemy) {
+Player.prototype.attack = function(enemy, callback) {
   console.log('Player is attacking:', enemy);
+  
   //TODO:
 
   // reduce enemy health
@@ -46,14 +52,29 @@ Player.prototype.attack = function(enemy) {
   // maybe animate enemy shake
   
   var damageAmount = this.calculateDamage(enemy.defense);
+
+  this.moveTo({x: enemy.x, y: enemy.y+32}, 500, function() {
+    this.damage(enemy, damageAmount);
+    callback(damageAmount);
+    this.moveTo(this.originalLocation, 700);
+  });
+};
+
+Player.prototype.moveTo = function(location, duration, callback) {
+  callback = callback || function(){};
+  
+  var tween = this.game.add.tween(this).to(location, duration, "Quart.easeOut");
+  tween.onComplete.add(callback, this);
+  tween.start();
+};
+
+Player.prototype.damage = function(enemy, amount) {
    if(this.alive){
-    enemy.health -= damageAmount;
+    enemy.health -= amount;
    } if(enemy.health <= 0){
      console.log('RIP');
      enemy.kill();
    }
-  
-  return damageAmount;
 };
 
 Player.prototype.update = function() {
