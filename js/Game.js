@@ -6,7 +6,11 @@ TopDownGame.Game = function () {};
 
 TopDownGame.Game.prototype = {
   create: function() {
-    this.changeLevel('level0');
+    if (this.game.currentLevel) {
+      this.changeLevel(this.game.currentLevel);
+    } else {
+      this.changeLevel('level0');
+    }
 
     //move player with cursor keys
     this.game.cursors = this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -18,13 +22,14 @@ TopDownGame.Game.prototype = {
     if (!levelString) {
       levelString = 'level0';
     }
+    this.game.currentLevel = levelString;
     // switch music
     if (this.music) {
       this.music.stop();
     }
     this.music = this.add.audio('megalovania');
     this.music.play();
-    this.music.volume = 0.5;
+    this.music.volume = 0.0;
 
     this.cleanup();
 
@@ -53,8 +58,12 @@ TopDownGame.Game.prototype = {
     this.createDoors();
     
     //create player
-    var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer')
-    this.player = new Player(this.game, result[0].x, result[0].y);
+    var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer');
+    if (this.game.currentData) {
+      this.player = new Player(this.game, this.game.currentData.playerX, this.game.currentData.playerY);
+    } else {
+      this.player = new Player(this.game, result[0].x, result[0].y);
+    }
     this.game.add.existing(this.player);
 
     //the camera will follow the player in the world
@@ -85,9 +94,10 @@ TopDownGame.Game.prototype = {
     this.enemies.enableBody = true;
     var result = this.findObjectsByType('enemy', this.map, 'objectsLayer');
 
+    var index = 0;
     result.forEach(function(element){
-      // this.createFromTiledObject(element, this.enemies);
-      this.createEnemy(element, this.enemies);
+      this.createEnemy(element, this.enemies, index);
+      index++;
     }, this);
   },
   createItems: function() {
@@ -134,8 +144,9 @@ TopDownGame.Game.prototype = {
       sprite[key] = element.properties[key];
     });
   },
-  createEnemy: function(element, group) {
+  createEnemy: function(element, group, index) {
     var sprite = new Enemy(this.game, element.x, element.y, element.properties);
+    sprite.index = index;
     group.add(sprite);
   },
   update: function() {
@@ -149,7 +160,7 @@ TopDownGame.Game.prototype = {
     this.game.physics.arcade.overlap(this.player, this.enemies, this.startBattle, null, this);
     
     // For debugging: immediately start battle with first enemy
-    this.startBattle(this.player, this.enemies.getFirstAlive());
+   // this.startBattle(this.player, this.enemies.getFirstAlive());
   },
   collect: function(player, collectable) {
     console.log('yummy!');
@@ -158,11 +169,27 @@ TopDownGame.Game.prototype = {
     collectable.destroy();
   },
   startBattle: function(player, enemy) {
+    this.saveCurrentData();
     // temporary! just destroy the enemy
     // enemy.destroy();
     this.cleanup();
     this.game.state.start('Battle');
     this.currentEnemy = enemy;
+    enemy.isCurrentlyBattling = true;
+  },
+  saveCurrentData: function(){
+    this.game.currentData = {};
+    this.game.currentData.playerX = this.player.x;
+    this.game.currentData.playerY = this.player.y;
+    console.log(this.enemies);
+    this.game.currentData.enemiesState = [];
+    var i = 0;
+    this.enemies.forEach(function(enemy) {
+      if (enemy.isCurrentlyBattling) {
+        console.log('ayyy');
+        this.game.currentData.enemiesState[enemy.index] = 0;
+      }
+    });
   },
   enterDoor: function(player, door) {
     console.log('entering door that will take you to '+door.targetTilemap+' on x:'+door.targetX+' and y:'+door.targetY);
