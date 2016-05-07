@@ -36,6 +36,10 @@ TopDownGame.Battle.prototype = {
     console.log(this.game.globals.currentEnemy.properties);
     this.enemy = new Enemy(this.game, 160 - 16, 80, this.game.globals.currentEnemy.properties);
     this.game.add.existing(this.enemy);
+    
+    this.playerAttackTimeRemaining = null;
+    this.enemyAttackTimeRemaining = null;
+    this.currentAttacker = 'player'; // or 'enemy'
 
     this.enterKey = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
     this.enterKey.onDown.add(this.onEnter, this);
@@ -135,6 +139,7 @@ TopDownGame.Battle.prototype = {
     console.log(action);
     var self = this;
     if (action === 'attack') {
+      this.playerAttackTimeRemaining = 1500;
       this.player.attack(this.enemy, function (damageAmount) {
         self.startAnimateDamageNumbers(self.enemy, damageAmount);
         self.playerAttackSound.play();
@@ -159,7 +164,15 @@ TopDownGame.Battle.prototype = {
       this.player.health += item.value;
     }
   },
+  canPlayerMakeAction: function() {
+    return (this.currentAttacker === 'player'
+            && this.playerAttackTimeRemaining == null
+    );
+  },
   onEnter: function() {
+    if (!this.canPlayerMakeAction()) {
+      return;
+    }
     var currentMenuItem = this.getCurrentMenuItem();
     this.triggerAction(currentMenuItem.action);
   },
@@ -181,6 +194,32 @@ TopDownGame.Battle.prototype = {
   },  
 
   update: function() {
+    // turn-based attack logic timing
+    if (this.playerAttackTimeRemaining !== null) {
+      this.playerAttackTimeRemaining -= this.game.time.elapsedMS;
+      if (this.playerAttackTimeRemaining <= 0) {
+        this.playerAttackTimeRemaining = null;
+        this.currentAttacker = 'enemy';
+      }
+    }
+    if (this.enemyAttackTimeRemaining !== null) {
+      this.enemyAttackTimeRemaining -= this.game.time.elapsedMS;
+      if (this.enemyAttackTimeRemaining <= 0) {
+        this.enemyAttackTimeRemaining = null;
+        this.currentAttacker = 'player';
+      }
+    }
+    
+    if (this.currentAttacker === 'enemy' && this.enemyAttackTimeRemaining === null) {
+      this.enemyAttackTimeRemaining = 1500;
+      var self = this;
+      this.enemy.attack(this.player, function (damageAmount) {
+        self.startAnimateDamageNumbers(self.player, damageAmount);
+        self.playerAttackSound.play();
+        self.shakeFrames = 18;
+      });
+    }
+    
     var currentMenuItem = this.getCurrentMenuItem();
     var currentMenuItemIndex = currentMenuItem.index;
     
@@ -231,6 +270,9 @@ TopDownGame.Battle.prototype = {
     this.statusDisplayEnemyHP.text = this.enemy.health;
     
     //end battle
+    if(this.player.health <= 0){
+      this.game.state.start('GameOver')
+    }
     if(this.enemy.health <= 0){
       this.game.state.start('Game');
     }

@@ -16,7 +16,7 @@ function Player (game, x, y) {
     this.maxSpeed = 50;
     this.sprintSpeed = 1000;
 
-    this.health = 1;
+    this.health = 10;
     this.inventory = [
       { name: 'potion',    value: 20, type: 'healing',  description: 'Heals you for 20 HP'},
       { name: 'hi potion', value: 50, type: 'healing', description: 'Heals you for 50 HP' },
@@ -24,7 +24,7 @@ function Player (game, x, y) {
     ];
     this.mana = 50;
     this.strength = 10;
-    this.defense = 7;
+    this.defense = 1;
 };
 
 
@@ -39,17 +39,11 @@ Player.prototype.playAnimation = function (direction) {
 Player.prototype.calculateDamage = function (enemyDefense){
  var random = 1 + Math.floor(Math.random() * 5);
  var damage = this.strength + random - enemyDefense;
+ if(damage < 0){damage = 1};
  return damage;
 }
 Player.prototype.attack = function(enemy, callback) {
   console.log('Player is attacking:', enemy);
-  
-  //TODO:
-
-  // reduce enemy health
-  // display damage above enemy
-  // trigger damage number animation
-  // maybe animate enemy shake
   
   var damageAmount = this.calculateDamage(enemy.defense);
 
