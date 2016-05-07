@@ -15,8 +15,7 @@ TopDownGame.Game.prototype = {
     //move player with cursor keys
     this.game.cursors = this.cursors = this.game.input.keyboard.createCursorKeys();
     this.game.globals = this;
-    
-
+    if (!this.game.currentData) { this.game.currentData = {}; };
   },
   changeLevel: function(levelString) {
     if (!levelString) {
@@ -25,11 +24,11 @@ TopDownGame.Game.prototype = {
     this.game.currentLevel = levelString;
     // switch music
     if (this.music) {
-      this.music.stop();
+      //this.music.stop();
     }
     this.music = this.add.audio('megalovania');
     this.music.play();
-    this.music.volume = 0.0;
+    this.music.volume = 20;
 
     this.cleanup();
 
@@ -59,7 +58,7 @@ TopDownGame.Game.prototype = {
     
     //create player
     var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer');
-    if (this.game.currentData) {
+    if (this.game.currentData && this.game.currentData.playerX) {
       this.player = new Player(this.game, this.game.currentData.playerX, this.game.currentData.playerY);
     } else {
       this.player = new Player(this.game, result[0].x, result[0].y);
@@ -87,6 +86,12 @@ TopDownGame.Game.prototype = {
       this.map.destroy();
     }
   },
+  fullCleanup: function () {
+    this.cleanup();
+    this.game.currentData.enemiesState = undefined;
+    this.game.currentData.playerX = undefined;
+    this.game.currentData.playerY = undefined;
+  },
   
   createEnemies: function() {
     //create enemies
@@ -96,7 +101,12 @@ TopDownGame.Game.prototype = {
 
     var index = 0;
     result.forEach(function(element){
-      this.createEnemy(element, this.enemies, index);
+      if (  !this.game.currentData
+            || !this.game.currentData.enemiesState
+            || this.game.currentData.enemiesState[index] !== 0
+      ) {
+        this.createEnemy(element, this.enemies, index);
+      }
       index++;
     }, this);
   },
@@ -169,30 +179,38 @@ TopDownGame.Game.prototype = {
     collectable.destroy();
   },
   startBattle: function(player, enemy) {
+    this.currentEnemy = enemy;
+    enemy.isCurrentlyBattling = true;
     this.saveCurrentData();
     // temporary! just destroy the enemy
     // enemy.destroy();
     this.cleanup();
     this.game.state.start('Battle');
-    this.currentEnemy = enemy;
-    enemy.isCurrentlyBattling = true;
   },
   saveCurrentData: function(){
-    this.game.currentData = {};
+    if (!this.game.currentData) {
+      this.game.currentData = {};
+    }
     this.game.currentData.playerX = this.player.x;
     this.game.currentData.playerY = this.player.y;
-    console.log(this.enemies);
-    this.game.currentData.enemiesState = [];
-    var i = 0;
-    this.enemies.forEach(function(enemy) {
+    if (!this.game.currentData.enemiesState) {
+      this.game.currentData.enemiesState = [];
+    }
+    // console.log('enemiesState before we save:', JSON.stringify(this.game.currentData.enemiesState));
+    for(var i = 0; i < this.enemies.children.length; i++) {
+      console.log(this.enemies.children)
+      var enemy = this.enemies.children[i];
       if (enemy.isCurrentlyBattling) {
-        console.log('ayyy');
         this.game.currentData.enemiesState[enemy.index] = 0;
+      } else {
+        this.game.currentData.enemiesState[enemy.index] = 1;
       }
-    });
+    }
+    // console.log('enemiesState after we save:', JSON.stringify(this.game.currentData.enemiesState));
   },
   enterDoor: function(player, door) {
     console.log('entering door that will take you to '+door.targetTilemap+' on x:'+door.targetX+' and y:'+door.targetY);
+    this.fullCleanup();
     this.changeLevel(door.targetTilemap);
   }
 };
